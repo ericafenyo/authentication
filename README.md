@@ -1,3 +1,3 @@
 # Authentication
 
-A REST API for handling user authentication
+An API for handling user authentication
