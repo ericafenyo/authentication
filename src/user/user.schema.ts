@@ -1,67 +1,60 @@
-import { Schema, Document } from 'mongoose';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const UserSchema = new Schema({
-  name: {
-    type: String,
-    default: '',
-  },
-  username: {
-    type: String,
-    default: '',
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email_verified: {
-    type: Boolean,
-    default: false,
-  },
-  avatar_path: {
-    type: String,
-    default: '',
-  },
-  bio: {
-    type: String,
-    default: '',
-  },
-  uuid: {
-    type: String,
-    unique: true,
-  },
-  user_metadata: {
-    type: Object,
-    default: {},
-  },
-  last_password_reset: {
-    type: Date,
-  },
-  logins_count: {
-    type: Number,
-    default: 0,
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
+@Schema()
+@ObjectType()
 export class User extends Document {
-  name: string;
-  email: string;
+  @Prop({ default: '' })
+  @Field()
+  firstName: string;
+
+  @Prop({ default: '' })
+  @Field()
+  lastName: string;
+
+  @Prop({ default: '' })
+  @Field()
+  middleName: string;
+
+  @Prop({ default: '', unique: true })
+  @Field()
   username: string;
-  avatar_path: string;
-  uuid: string;
-  email_verified: boolean;
+
+  @Prop({ default: '', unique: true })
+  @Field()
+  email: string;
+
+  @Prop({ default: '' })
+  @Field()
   bio: string;
-  last_password_reset: Date;
-  logins_count: number;
-  user_metadata: any;
-  created_at: Date;
-  updated_at: Date;
+
+  @Prop({ default: '' })
+  @Field()
+  avatar: string;
+
+  userMetadata: any;
+
+  @Prop({ default: false })
+  emailVerified: boolean;
+
+  @Prop({ default: false })
+  blocked: boolean;
+
+  @Prop({ default: '' })
+  @Field({ nullable: true })
+  lastPasswordReset: Date;
+
+  @Prop({ default: '' })
+  @Field({ nullable: true })
+  lastLogin: Date;
+
+  @Prop({ default: Date.now })
+  @Field()
+  createdAt: Date;
+
+  @Prop()
+  updatedAt?: Date;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);

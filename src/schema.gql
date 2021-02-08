@@ -3,27 +3,65 @@
 # ------------------------------------------------------
 
 type User {
-  id: String!
+  firstName: String!
+  lastName: String!
+  middleName: String!
+  username: String!
+  email: String!
+  bio: String!
+  avatar: String!
+  lastPasswordReset: DateTime
+  lastLogin: DateTime
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type UserType {
+  id: ID!
   name: String!
   username: String!
-  bio: String!
   email: String!
-  email_verified: Boolean!
-  avatar_path: String!
+  bio: String!
+  avatar: String!
+  verified: Boolean!
+  blocked: Boolean!
+  createdAt: DateTime!
+}
+
+type CompanyType {
+  name: String!
+  id: ID!
+  user: UserType!
 }
 
 type Query {
-  getUser(id: String!): User!
+  user(userId: String!): UserType!
+  company(companyId: String!): CompanyType!
 }
 
 type Mutation {
-  createUser(input: UserInput!): User!
+  user(user: UserInput!): User!
+  company(input: CompanyInput!): CompanyType!
 }
 
 input UserInput {
+  username: String!
+  firstName: String!
+  middleName: String!
+  lastName: String!
+  email: String!
+  bio: String!
+  password: String!
+}
+
+input CompanyInput {
+  name: String!
+  firstName: String!
+  lastName: String!
   email: String!
   password: String!
-  name: String
-  username: String
-  bio: String
 }
