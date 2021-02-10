@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserInput } from './user.dto';
 import { User } from './user.schema';
-import { v4 as uuid } from 'uuid';
-import { CredentialService } from 'src/credential/credential.service';
+import { CredentialService } from '../credential/credential.service';
+import { UserInput } from './user.resolver';
 
 @Injectable()
 export class UserService {
@@ -13,15 +12,17 @@ export class UserService {
     private credentialService: CredentialService,
   ) {}
 
-  async create(input: UserInput): Promise<User> {
-    const user = new this.userModel(input);
-    user.uuid = uuid();
-    await user.save();
-    await this.credentialService.save(user._id, input.password);
+  async create(userInput: UserInput): Promise<User> {
+    if (!userInput.email && userInput.username) {
+      throw new BadRequestException('email or username must be provided');
+    }
+
+    const user = await new this.userModel(userInput).save();
+    await this.credentialService.save(user._id, userInput.password);
     return user;
   }
 
-  async findOne(userId: String): Promise<User> {
-    return this.userModel.findOne({ _id: userId });
+  async findById(userId: string): Promise<User> {
+    return await this.userModel.findOne({ _id: userId });
   }
 }

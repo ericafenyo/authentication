@@ -2,28 +2,77 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: String!
+type UserType {
+  id: ID!
   name: String!
   username: String!
-  bio: String!
   email: String!
-  email_verified: Boolean!
-  avatar_path: String!
+  bio: String!
+  avatar: String!
+  verified: Boolean!
+  blocked: Boolean!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type CompanyType {
+  id: ID!
+  name: String!
+  user: UserType!
+}
+
+type ApplicationType {
+  id: ID!
+  name: String!
+  description: String!
+  identifier: String!
+  tokenExpiration: Float!
+  signingAlgorithm: String!
+  createdAt: DateTime!
+  company: CompanyType!
 }
 
 type Query {
-  getUser(id: String!): User!
+  user(userId: String!): UserType!
+  company(companyId: String!): CompanyType!
+  applications(companyId: String!): [ApplicationType!]!
+  application(applicationId: String!, companyId: String!): ApplicationType!
 }
 
 type Mutation {
-  createUser(input: UserInput!): User!
+  user(user: UserInput!): UserType!
+  company(input: CompanyInput!): CompanyType!
+  application(props: ApplicationInput!): ApplicationType!
 }
 
 input UserInput {
+  username: String
+  firstName: String
+  middleName: String
+  lastName: String
+  email: String!
+  bio: String
+  password: String!
+}
+
+input CompanyInput {
+  name: String!
+  firstName: String!
+  lastName: String!
   email: String!
   password: String!
-  name: String
-  username: String
-  bio: String
+}
+
+input ApplicationInput {
+  companyId: String!
+
+  """The application name. 50 characters max"""
+  name: String!
+
+  """A short description of the app. 100 characters max"""
+  description: String!
 }

@@ -5,6 +5,8 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CredentialModule } from './credential/credential.module';
+import { CompanyModule } from './company/company.module';
+import { ApplicationModule } from './application/application.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { CredentialModule } from './credential/credential.module';
     AuthModule,
     UserModule,
     CredentialModule,
+    CompanyModule,
+    ApplicationModule,
   ],
   controllers: [],
   providers: [],

@@ -1,67 +1,48 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const UserSchema = new Schema({
-  name: {
-    type: String,
-    default: '',
-  },
-  username: {
-    type: String,
-    default: '',
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email_verified: {
-    type: Boolean,
-    default: false,
-  },
-  avatar_path: {
-    type: String,
-    default: '',
-  },
-  bio: {
-    type: String,
-    default: '',
-  },
-  uuid: {
-    type: String,
-    unique: true,
-  },
-  user_metadata: {
-    type: Object,
-    default: {},
-  },
-  last_password_reset: {
-    type: Date,
-  },
-  logins_count: {
-    type: Number,
-    default: 0,
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
+@Schema()
 export class User extends Document {
-  name: string;
-  email: string;
+  @Prop({ default: '' })
+  firstName: string;
+
+  @Prop({ default: '' })
+  lastName: string;
+
+  @Prop({ default: '' })
+  middleName: string;
+
+  @Prop({ default: '' })
   username: string;
-  avatar_path: string;
-  uuid: string;
-  email_verified: boolean;
+
+  @Prop({ required: true, unique: true })
+  email: string;
+
+  @Prop({ default: '' })
   bio: string;
-  last_password_reset: Date;
-  logins_count: number;
-  user_metadata: any;
-  created_at: Date;
-  updated_at: Date;
+
+  @Prop({ default: '' })
+  avatar: string;
+
+  userMetadata: any;
+
+  @Prop({ default: false })
+  emailVerified: boolean;
+
+  @Prop({ default: false })
+  blocked: boolean;
+
+  @Prop()
+  lastPasswordReset?: Date;
+
+  @Prop()
+  lastLogin?: Date;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
+
+  @Prop()
+  updatedAt?: Date;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
