@@ -11,6 +11,7 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { UserType } from 'src/user/user.resolver';
+import { User } from 'src/user/user.schema';
 import { Company } from './company.schema';
 import { CompanyService } from './company.service';
 
@@ -34,11 +35,11 @@ export class CompanyInput {
 
 @ObjectType()
 export class CompanyType {
-  @Field()
-  name: string;
-
   @Field(() => ID, { name: 'id' })
   _id: string;
+
+  @Field()
+  name: string;
 
   @Field()
   user: UserType;
@@ -49,7 +50,7 @@ export class CompanyResolver {
   constructor(private readonly companyService: CompanyService) {}
 
   @Query(() => CompanyType, { name: 'company' })
-  async getCompany(@Args('companyId') companyId: string) {
+  async getCompany(@Args('companyId') companyId: string): Promise<Company> {
     return await this.companyService.findOne(companyId);
   }
 
@@ -59,7 +60,7 @@ export class CompanyResolver {
   }
 
   @ResolveField()
-  async user(@Parent() company: Company) {
+  async user(@Parent() company: Company): Promise<User> {
     return await this.companyService.getUser(company.userId);
   }
 }

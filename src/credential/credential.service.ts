@@ -11,12 +11,12 @@ export class CredentialService {
     private model: Model<Credential>,
   ) {}
 
-  async save(userId: string, password: string) {
+  async save(userId: string, password: string): Promise<void> {
     const hashedPassword = await this.hash(password);
-    await new this.model({ user_id: userId, password: hashedPassword }).save();
+    await new this.model({ userId, password: hashedPassword }).save();
   }
 
-  async hash(password: string) {
+  async hash(password: string): Promise<string> {
     const saltRounds = 14;
     return await bcrypt.hash(password, saltRounds);
   }
@@ -27,7 +27,7 @@ export class CredentialService {
    * @param candidate the password to be verified
    * @param hashed the existing password hash
    */
-  async isValidCredential(candidate: string, hashed: string) {
+  async isValidCredential(candidate: string, hashed: string): Promise<boolean> {
     return await bcrypt.compare(candidate, hashed);
   }
 }

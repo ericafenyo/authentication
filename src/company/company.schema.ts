@@ -7,7 +7,7 @@ export class Company extends Document {
   @Prop()
   name: string;
 
-  @Prop({ type: Types.ObjectId, ref: User })
+  @Prop({ type: Types.ObjectId, ref: User, required: true })
   userId: string;
 
   @Prop({ type: [Types.ObjectId] })

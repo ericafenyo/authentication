@@ -15,22 +15,22 @@ import { UserService } from './user.service';
 
 @InputType()
 export class UserInput {
-  @Field()
+  @Field({ nullable: true })
   username?: string;
 
-  @Field()
+  @Field({ nullable: true })
   firstName?: string;
 
-  @Field()
+  @Field({ nullable: true })
   middleName?: string;
 
-  @Field()
+  @Field({ nullable: true })
   lastName?: string;
 
   @Field()
-  email?: string;
+  email: string;
 
-  @Field()
+  @Field({ nullable: true })
   bio?: string;
 
   @Field()
@@ -78,13 +78,13 @@ export class UserResolver {
     return await this.userService.findById(userId);
   }
 
-  @Mutation(() => User, { name: 'user' })
-  async createUser(@Args('user') user: UserInput) {
+  @Mutation(() => UserType, { name: 'user' })
+  async createUser(@Args('user') user: UserInput): Promise<User> {
     return await this.userService.create(user);
   }
 
   @ResolveField()
-  async name(@Parent() user: User) {
+  async name(@Parent() user: User): Promise<string> {
     return `${user.firstName} ${user.lastName}`;
   }
 }

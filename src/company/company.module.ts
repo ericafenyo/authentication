@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from '../user/user.module';
-import { Application, ApplicationSchema } from './application.schema';
+import { Application, ApplicationSchema } from '../application/application.schema';
 import { CompanyResolver } from './company.resolver';
 import { Company, CompanySchema } from './company.schema';
 import { CompanyService } from './company.service';
