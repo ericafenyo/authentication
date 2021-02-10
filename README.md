@@ -1,3 +1,3 @@
 # Authentication
 
-An Graphql API for handling user authentication
+An GraphQL API for handling user authentication
