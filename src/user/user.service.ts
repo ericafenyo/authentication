@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
-import { CredentialService } from 'src/credential/credential.service';
+import { CredentialService } from '../credential/credential.service';
 import { UserInput } from './user.resolver';
 
 @Injectable()
