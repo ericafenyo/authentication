@@ -13,6 +13,7 @@ import { ApplicationModule } from './application/application.module';
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_URL),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      context: ({ req }) => ({ req })
     }),
     AuthModule,
     UserModule,
