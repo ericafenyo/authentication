@@ -37,3 +37,5 @@ lerna-debug.log*
 
 #Enviroment variable
 .env
+secret-key.pub
+secret-key
