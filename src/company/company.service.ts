@@ -24,7 +24,7 @@ export class CompanyService {
   async create(props: CompanyInput): Promise<Company> {
     const user = await this.userService.create(props);
     const company = new this.model(props);
-    company.userId = user._id;
+    company.ownerId = user._id;
     return company.save();
   }
 

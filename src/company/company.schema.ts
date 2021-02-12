@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { User } from 'src/user/user.schema';
+import { User } from '../user/user.schema';
 
 @Schema()
 export class Company extends Document {
@@ -8,10 +8,14 @@ export class Company extends Document {
   name: string;
 
   @Prop({ type: Types.ObjectId, ref: User, required: true })
-  userId: string;
+  ownerId: string;
 
-  @Prop({ type: [Types.ObjectId] })
-  tenants: string[];
+  @Prop({ default: [] })
+  tenants: [
+    {
+      id: Types.ObjectId;
+    },
+  ];
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

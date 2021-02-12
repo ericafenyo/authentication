@@ -13,5 +13,6 @@ import { Company, CompanySchema } from '../company/company.schema';
     ]),
   ],
   providers: [ApplicationResolver, ApplicationService],
+  exports: [ApplicationService],
 })
 export class ApplicationModule {}

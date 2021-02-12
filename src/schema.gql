@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type JWTokensType {
+  access_token: String!
+  refresh_token: String!
+}
+
 type UserType {
   id: ID!
   name: String!
@@ -44,6 +49,7 @@ type Query {
 }
 
 type Mutation {
+  tokens(email: String!, password: String!, identifier: String!, secret: String!): JWTokensType!
   user(user: UserInput!): UserType!
   company(input: CompanyInput!): CompanyType!
   application(props: ApplicationInput!): ApplicationType!
@@ -57,6 +63,7 @@ input UserInput {
   email: String!
   bio: String
   password: String!
+  companyId: String!
 }
 
 input CompanyInput {

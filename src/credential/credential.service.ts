@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Credential } from './credential.schema';
@@ -29,5 +29,13 @@ export class CredentialService {
    */
   async isValidCredential(candidate: string, hashed: string): Promise<boolean> {
     return await bcrypt.compare(candidate, hashed);
+  }
+
+  async findPasswordByUserId(userId: string): Promise<string> {
+    const credentials = await this.model.findOne({ userId });
+    if (!credentials) {
+      throw new NotFoundException('User credentials not found');
+    }
+    return credentials.password;
   }
 }

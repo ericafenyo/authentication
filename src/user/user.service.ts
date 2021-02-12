@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
@@ -8,7 +8,7 @@ import { UserInput } from './user.resolver';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(User.name) private model: Model<User>,
     private credentialService: CredentialService,
   ) {}
 
@@ -17,12 +17,30 @@ export class UserService {
       throw new BadRequestException('email or username must be provided');
     }
 
-    const user = await new this.userModel(userInput).save();
+    const user = await new this.model(userInput).save();
     await this.credentialService.save(user._id, userInput.password);
     return user;
   }
 
   async findById(userId: string): Promise<User> {
-    return await this.userModel.findOne({ _id: userId });
+    return await this.model.findOne({ _id: userId });
+  }
+
+  async findByEmail(email: string): Promise<any> {
+    const user = await this.model.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundException('User account not found');
+    }
+
+    const password = await this.credentialService.findPasswordByUserId(user._id);
+
+    return {
+      id: user._id,
+      email: user.email,
+      verified: user.verified,
+      avatar: user.avatar,
+      password: password,
+    };
   }
 }

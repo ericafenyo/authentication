@@ -61,6 +61,6 @@ export class CompanyResolver {
 
   @ResolveField()
   async user(@Parent() company: Company): Promise<User> {
-    return await this.companyService.getUser(company.userId);
+    return await this.companyService.getUser(company.ownerId);
   }
 }

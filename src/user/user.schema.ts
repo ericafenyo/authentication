@@ -1,5 +1,5 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema()
 export class User extends Document {
@@ -24,10 +24,10 @@ export class User extends Document {
   @Prop({ default: '' })
   avatar: string;
 
-  userMetadata: any;
+  metadata: any;
 
   @Prop({ default: false })
-  emailVerified: boolean;
+  verified: boolean;
 
   @Prop({ default: false })
   blocked: boolean;
@@ -37,6 +37,13 @@ export class User extends Document {
 
   @Prop()
   lastLogin?: Date;
+
+  @Prop({ default: [] })
+  companyIds: [
+    {
+      id: Types.ObjectId;
+    },
+  ];
 
   @Prop({ default: Date.now })
   createdAt: Date;

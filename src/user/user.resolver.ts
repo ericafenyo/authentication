@@ -9,6 +9,7 @@ import {
   ID,
   ResolveField,
   Parent,
+  ArgsType,
 } from '@nestjs/graphql';
 import { User } from './user.schema';
 import { UserService } from './user.service';
@@ -35,6 +36,9 @@ export class UserInput {
 
   @Field()
   password: string;
+
+  @Field()
+  companyId?: string;
 }
 
 @ObjectType()
@@ -78,13 +82,13 @@ export class UserResolver {
     return await this.userService.findById(userId);
   }
 
-  @Mutation(() => UserType, { name: 'user' })
-  async createUser(@Args('user') user: UserInput): Promise<User> {
-    return await this.userService.create(user);
-  }
-
   @ResolveField()
   async name(@Parent() user: User): Promise<string> {
     return `${user.firstName} ${user.lastName}`;
+  }
+
+  @Mutation(() => UserType, { name: 'user' })
+  async createUser(@Args('user') user: UserInput): Promise<User> {
+    return await this.userService.create(user);
   }
 }
